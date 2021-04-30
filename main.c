@@ -1,7 +1,7 @@
 #include <raylib.h>
 #define TRUE 1
 #define FALSE 0
-#include "sprites.c"
+//#include "sprites.c"
 
 int main(){
 
