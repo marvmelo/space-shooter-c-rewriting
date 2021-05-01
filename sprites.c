@@ -52,6 +52,7 @@ MovePlayer (struct Spacecraft *player)
     if (IsKeyDown(KEY_A)) keyStates[2] = 1;
     if (IsKeyDown(KEY_D)) keyStates[3] = 1;
     Vector2 translation = {keyStates[1] - keyStates[0], keyStates[3] - keyStates[2]};
+    translation = Vector2Normalize(translation);
     TranslateSpacecraft(player, translation);
     return 0;
 }
