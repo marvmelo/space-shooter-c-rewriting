@@ -1,7 +1,8 @@
 #include <raylib.h>
 #define TRUE 1
 
-int StartScreen(int screenWidth, int screenHeight)
+int
+StartScreen (int screenWidth, int screenHeight)
 {
     int status = -1;
     char title[] = "Space Shooter";
@@ -15,10 +16,16 @@ int StartScreen(int screenWidth, int screenHeight)
     int titleY = (screenHeight - 250)/2;
     int messageX = (screenWidth - messageWidth)/2;
     int messageY = (screenHeight - 80)/2;
-    while(TRUE)
+    while (TRUE)
     {
-        if(WindowShouldClose()){
+        if (WindowShouldClose())
+        {
             status = 0;
+            break;
+        }
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            status = 2;
             break;
         }
         BeginDrawing();
@@ -30,3 +37,4 @@ int StartScreen(int screenWidth, int screenHeight)
 
     return status;
 }
+
