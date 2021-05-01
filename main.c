@@ -1,24 +1,24 @@
 #include <raylib.h>
 #define TRUE 1
 #define FALSE 0
-//#include "sprites.c"
+#include "screens.c"
 
 int main(){
 
     const int WIDTH = 1280;
     const int HEIGHT = 640;
+    int status = 1;
     InitWindow(WIDTH, HEIGHT, "Space Shooter C v1.0");
-
-    while(!WindowShouldClose())
+    while (status)
     {
-        BeginDrawing();
-        ClearBackground(BLACK);
-        DrawText("Space Shooter", 640, 320, 40, WHITE);
-        EndDrawing();
+        switch (status)
+        {
+        case (1):
+            status = StartScreen(WIDTH, HEIGHT);
+            break;
+        }
     }
-
     CloseWindow();
-
     return 0;
 }
 
