@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <raymath.h>
 
 struct Spacecraft
 {
@@ -25,7 +26,32 @@ InitializeSpacecraft (Vector2 center, int life, Color color)
 };
 
 int 
-DrawSpacecraft (struct Spacecraft *spac)
+DrawSpacecraft (struct Spacecraft *spacecraft)
 {
+    DrawTriangle(spacecraft->vertices[0], spacecraft->vertices[1], spacecraft->vertices[2], spacecraft->color);
+    return 0;
+}
 
+int
+TranslateSpacecraft (struct Spacecraft *spacecraft, Vector2 translation)
+{
+    for (int i = 0; i<3; i++)
+    {
+        spacecraft->vertices[i] = Vector2Add(spacecraft->vertices[i], translation);
+    }
+    spacecraft->center = Vector2Add(spacecraft->center, translation);
+    return 0;
+}
+
+int
+MovePlayer (struct Spacecraft *player)
+{
+    int keyStates[4] = {0};
+    if (IsKeyDown(KEY_W)) keyStates[0] = 1;
+    if (IsKeyDown(KEY_S)) keyStates[1] = 1;
+    if (IsKeyDown(KEY_A)) keyStates[2] = 1;
+    if (IsKeyDown(KEY_D)) keyStates[3] = 1;
+    Vector2 translation = {keyStates[1] - keyStates[0], keyStates[3] - keyStates[2]};
+    TranslateSpacecraft(player, translation);
+    return 0;
 }
