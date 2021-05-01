@@ -53,6 +53,7 @@ GameplayScreen (int screenWidth, int screenHeight)
             break;
         }
         BeginDrawing();
+        ClearBackground(BLACK);
         MovePlayer(&player);
         DrawSpacecraft(&player);
         EndDrawing();
