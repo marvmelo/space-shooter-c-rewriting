@@ -3,8 +3,9 @@
 #define FALSE 0
 #include "screens.c"
 
-int main(){
-
+int
+main () 
+{
     const int WIDTH = 1280;
     const int HEIGHT = 640;
     int status = 1;
@@ -15,6 +16,9 @@ int main(){
         {
         case (1):
             status = StartScreen(WIDTH, HEIGHT);
+            break;
+        case (2):
+            status = GameplayScreen(WIDTH, HEIGHT);
             break;
         }
     }
