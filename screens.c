@@ -1,7 +1,9 @@
 #include <raylib.h>
+#include "sprites.c"
 #define TRUE 1
 
-int StartScreen(int screenWidth, int screenHeight)
+int
+StartScreen (int screenWidth, int screenHeight)
 {
     int status = -1;
     char title[] = "Space Shooter";
@@ -15,10 +17,16 @@ int StartScreen(int screenWidth, int screenHeight)
     int titleY = (screenHeight - 250)/2;
     int messageX = (screenWidth - messageWidth)/2;
     int messageY = (screenHeight - 80)/2;
-    while(TRUE)
+    while (TRUE)
     {
-        if(WindowShouldClose()){
+        if (WindowShouldClose())
+        {
             status = 0;
+            break;
+        }
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            status = 2;
             break;
         }
         BeginDrawing();
@@ -27,6 +35,28 @@ int StartScreen(int screenWidth, int screenHeight)
         DrawText(message, messageX, messageY, messageFontSize, WHITE);
         EndDrawing();
     }
+    return status;
+}
 
+int
+GameplayScreen (int screenWidth, int screenHeight)
+{
+    int status = 2;
+    struct Spacecraft player;
+    Vector2 screenCenter = {(float)screenWidth/2.0f, (float)screenHeight/2.0f};
+    player = InitializeSpacecraft(screenCenter, 5, BLUE);
+    while (TRUE)
+    {
+        if (WindowShouldClose())
+        {
+            status = 0;
+            break;
+        }
+        BeginDrawing();
+        ClearBackground(BLACK);
+        MovePlayer(&player);
+        DrawSpacecraft(&player);
+        EndDrawing();
+    }
     return status;
 }
