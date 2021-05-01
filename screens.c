@@ -43,7 +43,7 @@ GameplayScreen (int screenWidth, int screenHeight)
 {
     int status = 2;
     struct Spacecraft player;
-    Vector2 screenCenter = {screenWidth/2, screenHeight/2};
+    Vector2 screenCenter = {(float)screenWidth/2.0f, (float)screenHeight/2.0f};
     player = InitializeSpacecraft(screenCenter, 5, BLUE);
     while (TRUE)
     {
