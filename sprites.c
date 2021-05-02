@@ -87,5 +87,14 @@ RotatePlayer (struct Spacecraft *player)
 {
     Vector2 target = GetMousePosition();
     PointSpacecraftAt(player, target);
+    return 0;
 }
+
+struct Bullet
+{
+    Vector2 center;
+    Vector2 direction;
+    Color color;
+    int radius;
+};
 
