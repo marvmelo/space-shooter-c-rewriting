@@ -10,6 +10,7 @@ struct Spacecraft
     Vector2 center;
     Color color;
     int life;
+    int bulletLock;
 };
 
 struct Spacecraft 
@@ -25,6 +26,7 @@ InitializeSpacecraft (Vector2 center, int life, Color color)
     spacecraft.vertices[2] = vertex3;
     spacecraft.life = life;
     spacecraft.color = color;
+    spacecraft.bulletLock = 0;
     return spacecraft;
 };
 
@@ -41,6 +43,7 @@ DrawSpacecraft (struct Spacecraft *spacecraft)
 int
 TranslateSpacecraft (struct Spacecraft *spacecraft, Vector2 translation)
 {
+
     for (int i = 0; i < 3; i++)
     {
         spacecraft->vertices[i] = Vector2Add(spacecraft->vertices[i], translation);
