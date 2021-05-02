@@ -43,7 +43,19 @@ DrawSpacecraft (struct Spacecraft *spacecraft)
 int
 TranslateSpacecraft (struct Spacecraft *spacecraft, Vector2 translation)
 {
-
+    for (int i = 0; i < 3; i++)
+    {
+        if ((spacecraft->vertices[i].x<15 && translation.x<0) ||
+            (spacecraft->vertices[i].x>(WIDTH-15) && translation.x>0))
+        {
+            translation.x = 0;
+        }
+        if ((spacecraft->vertices[i].y<15 && translation.y<0) ||
+            (spacecraft->vertices[i].y>(HEIGHT-15) && translation.y>0))
+        {
+            translation.y = 0;
+        }
+    }
     for (int i = 0; i < 3; i++)
     {
         spacecraft->vertices[i] = Vector2Add(spacecraft->vertices[i], translation);
@@ -204,3 +216,4 @@ UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegi
         player->bulletLock = 0;
     }
 }
+
