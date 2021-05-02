@@ -118,7 +118,7 @@ InitializeBulletRegistryPlayer ()
 }
 
 int
-DrawBullet (struct BulletRegistryPlayer *bulletRegistryPlayer)
+DrawBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
     for (int i = 0; i < 20; i++)
     {
@@ -162,7 +162,7 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
 }
 
 int
-UpdateBullet (struct BulletRegistryPlayer *bulletRegistryPlayer)
+UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
     for (int i = 0; i < 20; i++)
     {

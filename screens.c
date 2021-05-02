@@ -45,6 +45,8 @@ GameplayScreen (int screenWidth, int screenHeight)
     struct Spacecraft player;
     Vector2 screenCenter = {(float)screenWidth/2.0f, (float)screenHeight/2.0f};
     player = InitializeSpacecraft(screenCenter, 5, BLUE);
+    struct BulletRegistryPlayer bulletRegistryPlayer;
+    bulletRegistryPlayer = InitializeBulletRegistryPlayer();
     while (TRUE)
     {
         if (WindowShouldClose())
@@ -52,11 +54,14 @@ GameplayScreen (int screenWidth, int screenHeight)
             status = 0;
             break;
         }
-        BeginDrawing();
-        ClearBackground(BLACK);
         MovePlayer(&player);
         RotatePlayer(&player);
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) MakePlayerShoot(&player, &bulletRegistryPlayer);
+        UpdateBulletPlayer(&bulletRegistryPlayer);
+        BeginDrawing();
+        ClearBackground(BLACK);
         DrawSpacecraft(&player);
+        DrawBulletPlayer(&bulletRegistryPlayer);
         EndDrawing();
     }
     return status;
