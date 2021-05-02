@@ -72,11 +72,11 @@ PointSpacecraftAt (struct Spacecraft *spacecraft, Vector2 target)
     angleSin = sin(angle);
     for (int i = 0; i<3; i++)
     {
-        float oldX, oldY;
-        oldX = spacecraft->vertices[i].x;
-        oldY = spacecraft->vertices[i].y;
-        spacecraft->vertices[i].x = angleCos*oldX - angleSin*oldY;
-        spacecraft->vertices[i].y = angleSin*oldX + angleCos*oldY;
+        float relativeX, relativeY;
+        relativeX = spacecraft->vertices[i].x - spacecraft->center.x;
+        relativeY = spacecraft->vertices[i].y - spacecraft->center.y;
+        spacecraft->vertices[i].x = angleCos*relativeX - angleSin*relativeY + spacecraft->center.x;
+        spacecraft->vertices[i].y = angleSin*relativeX + angleCos*relativeY + spacecraft->center.y;
     }
     return 0;
 }
