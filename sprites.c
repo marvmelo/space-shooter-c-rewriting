@@ -117,6 +117,22 @@ InitializeBulletRegistryPlayer ()
     return bulletRegistryPlayer;
 }
 
+int
+DrawBullet (struct BulletRegistryPlayer *bulletRegistryPlayer)
+{
+    for (int i = 0; i < 20; i++)
+    {
+        if (bulletRegistryPlayer->bulletAllocation[i])
+        {
+            Vector2 center = bulletRegistryPlayer->bulletArray[i].center;
+            float radius = bulletRegistryPlayer->bulletArray[i].radius;
+            Color color = bulletRegistryPlayer->bulletArray[i].color;
+            DrawCircleV(center, radius, color);
+        }
+    }
+    return 0;
+}
+
 struct Bullet
 MakeSpacecraftShoot (struct Spacecraft *spacecraft)
 {
