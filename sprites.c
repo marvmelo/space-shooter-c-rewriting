@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <raymath.h>
+#include <math.h>
 
 struct Spacecraft
 {
@@ -59,3 +60,31 @@ MovePlayer (struct Spacecraft *player)
     TranslateSpacecraft(player, translation);
     return 0;
 }
+
+int
+PointSpacecraftAt (struct Spacecraft *spacecraft, Vector2 target)
+{
+    Vector2 spacecraftDirection = Vector2Subtract(spacecraft->vertices[0], spacecraft->center);
+    Vector2 targetDirection = Vector2Subtract(target, spacecraft->center);
+    float angle = atan2(targetDirection.y, targetDirection.x) - atan2(spacecraftDirection.y, spacecraftDirection.x);
+    float angleCos, angleSin;
+    angleCos = cos(angle);
+    angleSin = sin(angle);
+    for (int i = 0; i<3; i++)
+    {
+        float oldX, oldY;
+        oldX = spacecraft->vertices[i].x;
+        oldY = spacecraft->vertices[i].y;
+        spacecraft->vertices[i].x = angleCos*oldX - angleSin*oldY;
+        spacecraft->vertices[i].y = angleSin*oldX + angleCos*oldY;
+    }
+    return 0;
+}
+
+int
+RotatePlayer (struct Spacecraft *player)
+{
+    Vector2 target = GetMousePosition();
+    PointSpacecraftAt(player, target);
+}
+
