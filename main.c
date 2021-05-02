@@ -10,6 +10,7 @@ main ()
     const int HEIGHT = 640;
     int status = 1;
     InitWindow(WIDTH, HEIGHT, "Space Shooter C v1.0");
+    SetTargetFPS(30);
     while (status)
     {
         switch (status)
