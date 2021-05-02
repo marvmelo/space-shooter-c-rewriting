@@ -144,12 +144,11 @@ MakeSpacecraftShoot (struct Spacecraft *spacecraft)
     return bullet;
 }
 
-struct Bullet
+int
 MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
     struct Bullet bullet = MakeSpacecraftShoot(player);
     bullet.color = YELLOW;
-    return bullet;
     for (int i = 0; i < 20; i++)
     {
         if (!bulletRegistryPlayer->bulletAllocation[i])
@@ -159,6 +158,7 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
             break;
         }
     }
+    return 0;
 }
 
 int
