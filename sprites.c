@@ -39,7 +39,7 @@ DrawSpacecraft (struct Spacecraft *spacecraft)
 int
 TranslateSpacecraft (struct Spacecraft *spacecraft, Vector2 translation)
 {
-    for (int i = 0; i<3; i++)
+    for (int i = 0; i < 3; i++)
     {
         spacecraft->vertices[i] = Vector2Add(spacecraft->vertices[i], translation);
     }
@@ -71,7 +71,7 @@ PointSpacecraftAt (struct Spacecraft *spacecraft, Vector2 target)
     float angleCos, angleSin;
     angleCos = cos(angle);
     angleSin = sin(angle);
-    for (int i = 0; i<3; i++)
+    for (int i = 0; i < 3; i++)
     {
         float relativeX, relativeY;
         relativeX = spacecraft->vertices[i].x - spacecraft->center.x;
@@ -100,7 +100,7 @@ struct Bullet
 
 struct BulletRegistryPlayer
 {
-    struct Bullet bulletPlayer[20];
+    struct Bullet bulletArray[20];
     int bulletAllocation[20];
 };
 
@@ -116,9 +116,18 @@ MakeSpacecraftShoot (struct Spacecraft *spacecraft)
 }
 
 struct Bullet
-MakePlayerShoot (struct Spacecraft *player)
+MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
     struct Bullet bullet = MakeSpacecraftShoot(player);
     bullet.color = YELLOW;
     return bullet;
+    for (int i = 0; i < 20; i++)
+    {
+        if (bulletRegistryPlayer->bulletAllocation[i])
+        {
+            bulletRegistryPlayer->bulletArray[i] = bullet;
+            bulletRegistryPlayer->bulletAllocation[i] = 0;
+            break;
+        }
+    }
 }
