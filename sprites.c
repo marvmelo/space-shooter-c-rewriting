@@ -106,6 +106,17 @@ struct BulletRegistryPlayer
     int bulletAllocation[20];
 };
 
+struct BulletRegistryPlayer
+InitializeBulletRegistryPlayer ()
+{
+    struct BulletRegistryPlayer bulletRegistryPlayer;
+    for (int i = 0; i < 20; i++)
+    {
+        bulletRegistryPlayer.bulletAllocation[i] = 0;
+    }
+    return bulletRegistryPlayer;
+}
+
 struct Bullet
 MakeSpacecraftShoot (struct Spacecraft *spacecraft)
 {
