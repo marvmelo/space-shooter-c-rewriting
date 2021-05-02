@@ -186,13 +186,13 @@ UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
 }
 
 int
-UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer bulletRegistryPlayer)
+UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
     MovePlayer(player);
     RotatePlayer(player);
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !player->bulletLock) 
     {
-        MakePlayerShoot(&player, &bulletRegistryPlayer);
+        MakePlayerShoot(player, bulletRegistryPlayer);
         player->bulletLock++;
     }
     else if (player->bulletLock<20)

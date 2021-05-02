@@ -54,12 +54,7 @@ GameplayScreen (int screenWidth, int screenHeight)
             status = 0;
             break;
         }
-        MovePlayer(&player);
-        RotatePlayer(&player);
-        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) 
-        {
-            MakePlayerShoot(&player, &bulletRegistryPlayer);
-        }
+        UpdatePlayer(&player, &bulletRegistryPlayer);
         UpdateBulletPlayer(&bulletRegistryPlayer);
         BeginDrawing();
         ClearBackground(BLACK);
