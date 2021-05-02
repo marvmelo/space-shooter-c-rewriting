@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <math.h>
+#define WIDTH 1280
+#define HEIGHT 640
 
 struct Spacecraft
 {
@@ -123,11 +125,32 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
     return bullet;
     for (int i = 0; i < 20; i++)
     {
-        if (bulletRegistryPlayer->bulletAllocation[i])
+        if (!bulletRegistryPlayer->bulletAllocation[i])
         {
             bulletRegistryPlayer->bulletArray[i] = bullet;
-            bulletRegistryPlayer->bulletAllocation[i] = 0;
+            bulletRegistryPlayer->bulletAllocation[i] = 1;
             break;
         }
     }
+}
+
+int
+UpdateBullet (struct BulletRegistryPlayer *bulletRegistryPlayer)
+{
+    for (int i = 0; i < 20; i++)
+    {
+        if (bulletRegistryPlayer->bulletAllocation[i])
+        {
+            Vector2 translation = Vector2Multiply(bulletRegistryPlayer->bulletArray[i].direction, (Vector2){10, 10});
+            bulletRegistryPlayer->bulletArray[i].center = Vector2Add(bulletRegistryPlayer->bulletArray[i].center, translation);
+            if (bulletRegistryPlayer->bulletArray[i].center.x<0 ||
+                bulletRegistryPlayer->bulletArray[i].center.x>WIDTH ||
+                bulletRegistryPlayer->bulletArray[i].center.y<0 ||
+                bulletRegistryPlayer->bulletArray[i].center.y>HEIGHT)
+            {
+                bulletRegistryPlayer->bulletAllocation[i] = 0;
+            }
+        }
+    }
+    return 0;
 }
