@@ -98,6 +98,12 @@ struct Bullet
     int radius;
 };
 
+struct BulletRegistryPlayer
+{
+    struct Bullet bulletPlayer[20];
+    int bulletAllocation[20];
+};
+
 struct Bullet
 MakeSpacecraftShoot (struct Spacecraft *spacecraft)
 {
