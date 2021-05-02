@@ -98,3 +98,21 @@ struct Bullet
     int radius;
 };
 
+struct Bullet
+MakeSpacecraftShoot (struct Spacecraft *spacecraft)
+{
+    struct Bullet bullet;
+    bullet.center = spacecraft->vertices[0];
+    Vector2 direction = Vector2Subtract(spacecraft->vertices[0], spacecraft->center);
+    bullet.direction = Vector2Normalize(direction);
+    bullet.radius = 4;
+    return bullet;
+}
+
+struct Bullet
+MakePlayerShoot (struct Spacecraft *player)
+{
+    struct Bullet bullet = MakeSpacecraftShoot(player);
+    bullet.color = YELLOW;
+    return bullet;
+}
