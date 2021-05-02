@@ -195,11 +195,11 @@ UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegi
         MakePlayerShoot(player, bulletRegistryPlayer);
         player->bulletLock++;
     }
-    else if (player->bulletLock<20)
+    else if (player->bulletLock<10 && player->bulletLock>0)
     {
         player->bulletLock++;
     }
-    else if (player->bulletLock==20 || player->bulletLock==0)
+    else if (player->bulletLock==10)
     {
         player->bulletLock = 0;
     }
