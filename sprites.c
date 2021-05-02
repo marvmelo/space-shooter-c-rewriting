@@ -184,3 +184,23 @@ UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
     }
     return 0;
 }
+
+int
+UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer bulletRegistryPlayer)
+{
+    MovePlayer(player);
+    RotatePlayer(player);
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !player->bulletLock) 
+    {
+        MakePlayerShoot(&player, &bulletRegistryPlayer);
+        player->bulletLock++;
+    }
+    else if (player->bulletLock<20)
+    {
+        player->bulletLock++;
+    }
+    else if (player->bulletLock==20 || player->bulletLock==0)
+    {
+        player->bulletLock = 0;
+    }
+}
