@@ -248,6 +248,7 @@ CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
             struct Spacecraft enemySpacecraft;
             enemySpacecraft = InitializeSpacecraft(enemyCenter, 1, MAROON);
             enemyRegistry->enemyArray[i] = enemySpacecraft;
+            enemyRegistry->enemyAllocation[i] = 1;
             break;
         }
     }
@@ -298,6 +299,7 @@ MakeEnemyShoot (struct Spacecraft *enemy, struct BulletRegistryEnemy *bulletRegi
         if (!bulletRegistryEnemy->bulletAllocation[i])
         {
             bulletRegistryEnemy->bulletArray[i] = enemyBullet;
+            bulletRegistryEnemy->bulletAllocation[i] = 1;
             break;
         }
     }
