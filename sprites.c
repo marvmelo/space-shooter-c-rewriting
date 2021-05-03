@@ -338,3 +338,52 @@ UpdateEnemy (struct EnemyRegistry *enemyRegistry,
     return 0;
 }
 
+int
+UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
+{
+    for (int i = 0; i < 100; i++)
+    {
+        if (bulletRegistryEnemy->bulletAllocation[i])
+        {
+            Vector2 translation = Vector2Multiply(bulletRegistryEnemy->bulletArray[i].direction, (Vector2){10, 10});
+            bulletRegistryEnemy->bulletArray[i].center = Vector2Add(bulletRegistryEnemy->bulletArray[i].center, translation);
+            if (bulletRegistryEnemy->bulletArray[i].center.x<0 ||
+                bulletRegistryEnemy->bulletArray[i].center.x>WIDTH ||
+                bulletRegistryEnemy->bulletArray[i].center.y<0 ||
+                bulletRegistryEnemy->bulletArray[i].center.y>HEIGHT)
+            {
+                bulletRegistryEnemy->bulletAllocation[i] = 0;
+            }
+        }
+    }
+    return 0;
+}
+
+int
+DrawEnemy(struct EnemyRegistry *enemyRegistry)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemyRegistry->enemyAllocation[i])
+        {
+            DrawSpacecraft(&enemyRegistry->enemyArray[i]);
+        }
+    }
+    return 0;
+}
+
+int
+DrawBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
+{
+    for (int i = 0; i < 100; i++)
+    {
+        if (bulletRegistryEnemy->bulletAllocation[i])
+        {
+            Vector2 center = bulletRegistryEnemy->bulletArray[i].center;
+            float radius = bulletRegistryEnemy->bulletArray[i].radius;
+            Color color = bulletRegistryEnemy->bulletArray[i].color;
+            DrawCircleV(center, radius, color);
+        }
+    }
+    return 0;
+}
