@@ -233,3 +233,56 @@ InitializeEnemyRegistry()
     }
     return enemyRegistry;
 }
+
+int
+CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (!enemyRegistry->enemyAllocation[i])
+        {
+            float enemyX, enemyY;
+            enemyX = (float)GetRandomValue(15, WIDTH-15);
+            enemyY = (float)GetRandomValue(15, HEIGHT-15);
+            Vector2 enemyCenter = {enemyX, enemyY};
+            struct Spacecraft enemySpacecraft;
+            enemySpacecraft = InitializeSpacecraft(enemyCenter, 1, MAROON);
+            enemyRegistry->enemyArray[i] = enemySpacecraft;
+            break;
+        }
+    }
+    return 0;
+}
+
+struct BulletRegistryEnemy
+{
+    struct Bullet bulletArray[100];
+    int bulletAllocation[100];
+};
+
+struct BulletRegistryEnemy
+InitializeBulletRegistryEnemy ()
+{
+    struct BulletRegistryEnemy bulletRegistryEnemy;
+    for (int i = 0; i < 100; i++)
+    {
+        bulletRegistryEnemy.bulletAllocation[i] = 0;
+    }
+}
+
+int
+MoveEnemy (struct Spacecraft *enemy, struct Spacecraft *player)
+{
+    Vector2 translation = Vector2Subtract(player->center, enemy->center);
+    translation = Vector2Normalize(translation);
+    translation = Vector2Multiply(translation, (Vector2){6.0f, 6.0f});
+    TranslateSpacecraft(enemy, translation);
+    return 0;
+}
+
+int
+RotateEnemy (struct Spacecraft *enemy, struct Spacecraft *player)
+{
+    PointSpacecraftAt(enemy, player->center);
+    return 0;
+}
