@@ -320,7 +320,21 @@ UpdateEnemy (struct EnemyRegistry *enemyRegistry,
         {
             MoveEnemy(&enemyRegistry->enemyArray[i], player);
             RotateEnemy(&enemyRegistry->enemyArray[i], player);
+            if (!enemyRegistry->enemyArray[i].bulletLock)
+            {
+                MakeEnemyShoot(&enemyRegistry->enemyArray[i], bulletRegistryEnemy);
+                enemyRegistry->enemyArray[i].bulletLock++;
+            }
+            else if (enemyRegistry->enemyArray[i].bulletLock<20)
+            {
+                enemyRegistry->enemyArray[i].bulletLock++;
+            }
+            else
+            {
+                enemyRegistry->enemyArray[i].bulletLock = 0;
+            }
         }
     }
+    return 0;
 }
 
