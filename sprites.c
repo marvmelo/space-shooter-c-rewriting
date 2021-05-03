@@ -163,7 +163,7 @@ int
 MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
     struct Bullet bullet = MakeSpacecraftShoot(player);
-    bullet.color = YELLOW;
+    bullet.color = ORANGE;
     for (int i = 0; i < 20; i++)
     {
         if (!bulletRegistryPlayer->bulletAllocation[i])
@@ -284,6 +284,22 @@ int
 RotateEnemy (struct Spacecraft *enemy, struct Spacecraft *player)
 {
     PointSpacecraftAt(enemy, player->center);
+    return 0;
+}
+
+int
+MakeEnemyShoot (struct Spacecraft *enemy, struct BulletRegistryEnemy *bulletRegistryEnemy)
+{
+    struct Bullet enemyBullet = MakeSpacecraftShoot(enemy);
+    enemyBullet.color = DARKPURPLE;
+    for (int i = 0; i < 100; i++)
+    {
+        if (!bulletRegistryEnemy->bulletAllocation[i])
+        {
+            bulletRegistryEnemy->bulletArray[i] = enemyBullet;
+            break;
+        }
+    }
     return 0;
 }
 
