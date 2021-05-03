@@ -306,7 +306,6 @@ MakeEnemyShoot (struct Spacecraft *enemy, struct BulletRegistryEnemy *bulletRegi
 
 int
 UpdateEnemy (struct EnemyRegistry *enemyRegistry, 
-             struct EnemyRegistryEnemy *enemyRegistryEnemy,
              struct BulletRegistryEnemy *bulletRegistryEnemy,
              struct Spacecraft *player)
 {
