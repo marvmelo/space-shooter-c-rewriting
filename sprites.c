@@ -217,3 +217,19 @@ UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegi
     }
 }
 
+struct EnemyRegistry
+{
+    struct Spacecraft enemyArray[5];
+    int enemyAllocation[5];
+};
+
+struct EnemyRegistry
+InitializeEnemyRegistry()
+{
+    struct EnemyRegistry enemyRegistry;
+    for (int i = 0; i < 5; i++)
+    {
+        enemyRegistry.enemyAllocation[i] = 0;
+    }
+    return enemyRegistry;
+}
