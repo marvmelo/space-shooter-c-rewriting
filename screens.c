@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <stdio.h>
 #include "sprites.c"
 #define TRUE 1
 
@@ -47,6 +48,10 @@ GameplayScreen (int screenWidth, int screenHeight)
     player = InitializeSpacecraft(screenCenter, 5, BLUE);
     struct BulletRegistryPlayer bulletRegistryPlayer;
     bulletRegistryPlayer = InitializeBulletRegistryPlayer();
+    struct EnemyRegistry enemyRegistry;
+    enemyRegistry = InitializeEnemyRegistry();
+    struct BulletRegistryEnemy bulletRegistryEnemy;
+    bulletRegistryEnemy = InitializeBulletRegistryEnemy();
     while (TRUE)
     {
         if (WindowShouldClose())
@@ -54,18 +59,23 @@ GameplayScreen (int screenWidth, int screenHeight)
             status = 0;
             break;
         }
-        MovePlayer(&player);
-        RotatePlayer(&player);
-        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) 
-        {
-            MakePlayerShoot(&player, &bulletRegistryPlayer);
-        }
+        UpdatePlayer(&player, &bulletRegistryPlayer);
         UpdateBulletPlayer(&bulletRegistryPlayer);
+        UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
+        UpdateBulletEnemy(&bulletRegistryEnemy);
         BeginDrawing();
         ClearBackground(BLACK);
         DrawSpacecraft(&player);
         DrawBulletPlayer(&bulletRegistryPlayer);
+        DrawEnemy(&enemyRegistry);
+        DrawBulletEnemy(&bulletRegistryEnemy);
         EndDrawing();
+        for (int i = 0; i < 5; i++)
+        {
+            printf("%i", enemyRegistry.enemyAllocation[i]);
+        }
+        printf("\n");
+        
     }
     return status;
 }
