@@ -286,3 +286,25 @@ RotateEnemy (struct Spacecraft *enemy, struct Spacecraft *player)
     PointSpacecraftAt(enemy, player->center);
     return 0;
 }
+
+int
+UpdateEnemy (struct EnemyRegistry *enemyRegistry, 
+             struct EnemyRegistryEnemy *enemyRegistryEnemy,
+             struct BulletRegistryEnemy *bulletRegistryEnemy,
+             struct Spacecraft *player)
+{
+    int randValue = GetRandomValue(0, 89);
+    if (randValue)
+    {
+        CreateEnemyInRegistry(enemyRegistry);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        if (enemyRegistry->enemyAllocation[i])
+        {
+            MoveEnemy(&enemyRegistry->enemyArray[i], player);
+            RotateEnemy(&enemyRegistry->enemyArray[i], player);
+        }
+    }
+}
+
