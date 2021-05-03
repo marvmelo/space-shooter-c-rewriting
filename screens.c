@@ -47,6 +47,10 @@ GameplayScreen (int screenWidth, int screenHeight)
     player = InitializeSpacecraft(screenCenter, 5, BLUE);
     struct BulletRegistryPlayer bulletRegistryPlayer;
     bulletRegistryPlayer = InitializeBulletRegistryPlayer();
+    struct EnemyRegistry enemyRegistry;
+    enemyRegistry = InitializeEnemyRegistry();
+    struct BulletRegistryEnemy bulletRegistryEnemy;
+    bulletRegistryEnemy = InitializeBulletRegistryEnemy();
     while (TRUE)
     {
         if (WindowShouldClose())
@@ -56,10 +60,14 @@ GameplayScreen (int screenWidth, int screenHeight)
         }
         UpdatePlayer(&player, &bulletRegistryPlayer);
         UpdateBulletPlayer(&bulletRegistryPlayer);
+        UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
+        UpdateBulletEnemy(&bulletRegistryEnemy);
         BeginDrawing();
         ClearBackground(BLACK);
         DrawSpacecraft(&player);
         DrawBulletPlayer(&bulletRegistryPlayer);
+        DrawEnemy(&enemyRegistry);
+        DrawBulletEnemy(&bulletRegistryEnemy);
         EndDrawing();
     }
     return status;
