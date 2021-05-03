@@ -268,6 +268,7 @@ InitializeBulletRegistryEnemy ()
     {
         bulletRegistryEnemy.bulletAllocation[i] = 0;
     }
+    return bulletRegistryEnemy;
 }
 
 int
