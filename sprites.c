@@ -11,6 +11,9 @@ struct Spacecraft
     Color color;
     int life;
     int bulletLock;
+
+    int maxDistanceToPlayer;
+    int direction;
 };
 
 struct Spacecraft 
@@ -230,6 +233,9 @@ InitializeEnemyRegistry()
     for (int i = 0; i < 5; i++)
     {
         enemyRegistry.enemyAllocation[i] = 0;
+        enemyRegistry.enemyArray[i].maxDistanceToPlayer = GetRandomValue(150, 300);
+        enemyRegistry.enemyArray[i].direction = GetRandomValue(0, 1);
+        if (!enemyRegistry.enemyArray[i].direction) enemyRegistry.enemyArray[i].direction = -1;
     }
     return enemyRegistry;
 }
