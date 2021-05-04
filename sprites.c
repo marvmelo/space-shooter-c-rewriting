@@ -3,6 +3,9 @@
 #include <math.h>
 #define WIDTH 1280
 #define HEIGHT 640
+#define MAXPLAYERBULLET 10
+#define MAXENEMYBULLET 50
+
 
 struct Spacecraft
 {
@@ -120,15 +123,15 @@ struct Bullet
 
 struct BulletRegistryPlayer
 {
-    struct Bullet bulletArray[20];
-    int bulletAllocation[20];
+    struct Bullet bulletArray[MAXPLAYERBULLET];
+    int bulletAllocation[MAXPLAYERBULLET];
 };
 
 struct BulletRegistryPlayer
 InitializeBulletRegistryPlayer ()
 {
     struct BulletRegistryPlayer bulletRegistryPlayer;
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
         bulletRegistryPlayer.bulletAllocation[i] = 0;
     }
@@ -138,7 +141,7 @@ InitializeBulletRegistryPlayer ()
 int
 DrawBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
         if (bulletRegistryPlayer->bulletAllocation[i])
         {
@@ -167,7 +170,7 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
 {
     struct Bullet bullet = MakeSpacecraftShoot(player);
     bullet.color = ORANGE;
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
         if (!bulletRegistryPlayer->bulletAllocation[i])
         {
@@ -182,7 +185,7 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
 int
 UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
         if (bulletRegistryPlayer->bulletAllocation[i])
         {
@@ -233,9 +236,6 @@ InitializeEnemyRegistry()
     for (int i = 0; i < 5; i++)
     {
         enemyRegistry.enemyAllocation[i] = 0;
-        enemyRegistry.enemyArray[i].maxDistanceToPlayer = GetRandomValue(150, 300);
-        enemyRegistry.enemyArray[i].direction = GetRandomValue(0, 1);
-        if (!enemyRegistry.enemyArray[i].direction) enemyRegistry.enemyArray[i].direction = -1;
     }
     return enemyRegistry;
 }
@@ -255,6 +255,9 @@ CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
             enemySpacecraft = InitializeSpacecraft(enemyCenter, 1, MAROON);
             enemyRegistry->enemyArray[i] = enemySpacecraft;
             enemyRegistry->enemyAllocation[i] = 1;
+            enemyRegistry->enemyArray[i].maxDistanceToPlayer = GetRandomValue(150, 400);
+            enemyRegistry->enemyArray[i].direction = GetRandomValue(0, 1);
+            if (!enemyRegistry->enemyArray[i].direction) enemyRegistry->enemyArray[i].direction = -1;
             break;
         }
     }
@@ -263,15 +266,15 @@ CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
 
 struct BulletRegistryEnemy
 {
-    struct Bullet bulletArray[100];
-    int bulletAllocation[100];
+    struct Bullet bulletArray[MAXENEMYBULLET];
+    int bulletAllocation[MAXENEMYBULLET];
 };
 
 struct BulletRegistryEnemy
 InitializeBulletRegistryEnemy ()
 {
     struct BulletRegistryEnemy bulletRegistryEnemy;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < MAXENEMYBULLET; i++)
     {
         bulletRegistryEnemy.bulletAllocation[i] = 0;
     }
@@ -281,11 +284,22 @@ InitializeBulletRegistryEnemy ()
 int
 MoveEnemy (struct Spacecraft *enemy, struct Spacecraft *player)
 {
-    Vector2 translation = Vector2Subtract(player->center, enemy->center);
+    Vector2 relativePosition = Vector2Subtract(player->center, enemy->center);
+    Vector2 translation = {0.0f, 0.0f};
+    if (Vector2Length(relativePosition)>enemy->maxDistanceToPlayer+50)
+    {
+        translation = Vector2Add(translation, relativePosition);
+    }
+    else if (Vector2Length(relativePosition)<enemy->maxDistanceToPlayer)
+    {
+        Vector2 inversePosition = Vector2Multiply(relativePosition, (Vector2){-1.0f, 1.0f});
+        translation = Vector2Add(translation, inversePosition);
+    }
+    Vector2 rotation = {enemy->direction*relativePosition.y, -enemy->direction*relativePosition.x};
+    translation = Vector2Add(translation, rotation);
     translation = Vector2Normalize(translation);
-    translation = Vector2Multiply(translation, (Vector2){6.0f, 6.0f});
+    translation = Vector2Multiply(translation, (Vector2){5.0f, 5.0f});
     TranslateSpacecraft(enemy, translation);
-    return 0;
 }
 
 int
@@ -300,7 +314,7 @@ MakeEnemyShoot (struct Spacecraft *enemy, struct BulletRegistryEnemy *bulletRegi
 {
     struct Bullet enemyBullet = MakeSpacecraftShoot(enemy);
     enemyBullet.color = DARKPURPLE;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < MAXENEMYBULLET; i++)
     {
         if (!bulletRegistryEnemy->bulletAllocation[i])
         {
@@ -349,7 +363,7 @@ UpdateEnemy (struct EnemyRegistry *enemyRegistry,
 int
 UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
 {
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < MAXENEMYBULLET; i++)
     {
         if (bulletRegistryEnemy->bulletAllocation[i])
         {
@@ -383,7 +397,7 @@ DrawEnemy(struct EnemyRegistry *enemyRegistry)
 int
 DrawBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
 {
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < MAXENEMYBULLET; i++)
     {
         if (bulletRegistryEnemy->bulletAllocation[i])
         {
