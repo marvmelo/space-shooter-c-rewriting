@@ -279,7 +279,7 @@ CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
             enemyY = (float)GetRandomValue(15, HEIGHT-15);
             Vector2 enemyCenter = {enemyX, enemyY};
             struct Spacecraft enemySpacecraft;
-            enemySpacecraft = InitializeSpacecraft(enemyCenter, 1, MAROON);
+            InitializeSpacecraft(&enemySpacecraft, enemyCenter, 1, MAROON);
             enemyRegistry->enemyArray[i] = enemySpacecraft;
             enemyRegistry->enemyAllocation[i] = 1;
             enemyRegistry->enemyArray[i].maxDistanceToPlayer = GetRandomValue(150, 400);
