@@ -45,13 +45,13 @@ GameplayScreen (int screenWidth, int screenHeight)
     int status = 2;
     struct Spacecraft player;
     Vector2 screenCenter = {(float)screenWidth/2.0f, (float)screenHeight/2.0f};
-    player = InitializeSpacecraft(screenCenter, 5, BLUE);
+    InitializeSpacecraft(&player, screenCenter, 5, BLUE);
     struct BulletRegistryPlayer bulletRegistryPlayer;
-    bulletRegistryPlayer = InitializeBulletRegistryPlayer();
+    InitializeBulletRegistryPlayer(&bulletRegistryPlayer);
     struct EnemyRegistry enemyRegistry;
-    enemyRegistry = InitializeEnemyRegistry();
+    InitializeEnemyRegistry(&enemyRegistry);
     struct BulletRegistryEnemy bulletRegistryEnemy;
-    bulletRegistryEnemy = InitializeBulletRegistryEnemy();
+    InitializeBulletRegistryEnemy(&bulletRegistryEnemy);
     while (TRUE)
     {
         if (WindowShouldClose())
