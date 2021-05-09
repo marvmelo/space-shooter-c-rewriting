@@ -5,6 +5,7 @@
 #define HEIGHT 640
 #define MAXPLAYERBULLET 10
 #define MAXENEMYBULLET 50
+#define POWERUPAMOUNT 2
 
 
 /* Struct definitions */
@@ -47,6 +48,11 @@ struct BulletRegistryEnemy
     int bulletAllocation[MAXENEMYBULLET];
 };
 
+struct PowerUpRegistry
+{
+    int powerUpAllocation[POWERUPAMOUNT];
+    int powerUpArray[POWERUPAMOUNT];
+};
 
 /* Initialization functions */
 
@@ -419,3 +425,6 @@ DrawBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
     }
     return 0;
 }
+
+
+/* Powerup functions */

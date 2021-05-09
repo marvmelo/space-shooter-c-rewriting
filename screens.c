@@ -70,12 +70,6 @@ GameplayScreen (int screenWidth, int screenHeight)
         DrawEnemy(&enemyRegistry);
         DrawBulletEnemy(&bulletRegistryEnemy);
         EndDrawing();
-        for (int i = 0; i < 5; i++)
-        {
-            printf("%i", enemyRegistry.enemyAllocation[i]);
-        }
-        printf("\n");
-        
     }
     return status;
 }
