@@ -50,54 +50,50 @@ struct BulletRegistryEnemy
 
 /* Initialization functions */
 
-struct Spacecraft 
-InitializeSpacecraft (Vector2 center, int life, Color color)
+int 
+InitializeSpacecraft (struct Spacecraft *spacecraft, Vector2 center, int life, Color color)
 {
     Vector2 vertex1 = {center.x, center.y - 15.0f};
     Vector2 vertex2 = {center.x - 15.0f, center.y + 15.0f};
     Vector2 vertex3 = {center.x + 15.0f, center.y + 15.0f};
-    struct Spacecraft spacecraft;
-    spacecraft.center = center;
-    spacecraft.vertices[0] = vertex1;
-    spacecraft.vertices[1] = vertex2;
-    spacecraft.vertices[2] = vertex3;
-    spacecraft.life = life;
-    spacecraft.color = color;
-    spacecraft.bulletLock = 0;
-    return spacecraft;
+    spacecraft->center = center;
+    spacecraft->vertices[0] = vertex1;
+    spacecraft->vertices[1] = vertex2;
+    spacecraft->vertices[2] = vertex3;
+    spacecraft->life = life;
+    spacecraft->color = color;
+    spacecraft->bulletLock = 0;
+    return 0;
 };
 
-struct BulletRegistryPlayer
-InitializeBulletRegistryPlayer ()
+int
+InitializeBulletRegistryPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
 {
-    struct BulletRegistryPlayer bulletRegistryPlayer;
     for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
-        bulletRegistryPlayer.bulletAllocation[i] = 0;
+        bulletRegistryPlayer->bulletAllocation[i] = 0;
     }
-    return bulletRegistryPlayer;
+    return 0;
 }
 
-struct EnemyRegistry
-InitializeEnemyRegistry()
+int
+InitializeEnemyRegistry(struct EnemyRegistry *enemyRegistry)
 {
-    struct EnemyRegistry enemyRegistry;
     for (int i = 0; i < 5; i++)
     {
-        enemyRegistry.enemyAllocation[i] = 0;
+        enemyRegistry->enemyAllocation[i] = 0;
     }
-    return enemyRegistry;
+    return 0;
 }
 
-struct BulletRegistryEnemy
-InitializeBulletRegistryEnemy ()
+int
+InitializeBulletRegistryEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
 {
-    struct BulletRegistryEnemy bulletRegistryEnemy;
     for (int i = 0; i < MAXENEMYBULLET; i++)
     {
-        bulletRegistryEnemy.bulletAllocation[i] = 0;
+        bulletRegistryEnemy->bulletAllocation[i] = 0;
     }
-    return bulletRegistryEnemy;
+    return 0;
 }
 
 
