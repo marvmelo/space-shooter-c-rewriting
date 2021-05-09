@@ -7,6 +7,8 @@
 #define MAXENEMYBULLET 50
 
 
+/* Struct definitions */
+
 struct Spacecraft
 {
     Vector2 vertices[3];
@@ -18,6 +20,35 @@ struct Spacecraft
     int maxDistanceToPlayer;
     int direction;
 };
+
+struct Bullet
+{
+    Vector2 center;
+    Vector2 direction;
+    Color color;
+    int radius;
+};
+
+struct BulletRegistryPlayer
+{
+    struct Bullet bulletArray[MAXPLAYERBULLET];
+    int bulletAllocation[MAXPLAYERBULLET];
+};
+
+struct EnemyRegistry
+{
+    struct Spacecraft enemyArray[5];
+    int enemyAllocation[5];
+};
+
+struct BulletRegistryEnemy
+{
+    struct Bullet bulletArray[MAXENEMYBULLET];
+    int bulletAllocation[MAXENEMYBULLET];
+};
+
+
+/* Initialization functions */
 
 struct Spacecraft 
 InitializeSpacecraft (Vector2 center, int life, Color color)
@@ -35,6 +66,42 @@ InitializeSpacecraft (Vector2 center, int life, Color color)
     spacecraft.bulletLock = 0;
     return spacecraft;
 };
+
+struct BulletRegistryPlayer
+InitializeBulletRegistryPlayer ()
+{
+    struct BulletRegistryPlayer bulletRegistryPlayer;
+    for (int i = 0; i < MAXPLAYERBULLET; i++)
+    {
+        bulletRegistryPlayer.bulletAllocation[i] = 0;
+    }
+    return bulletRegistryPlayer;
+}
+
+struct EnemyRegistry
+InitializeEnemyRegistry()
+{
+    struct EnemyRegistry enemyRegistry;
+    for (int i = 0; i < 5; i++)
+    {
+        enemyRegistry.enemyAllocation[i] = 0;
+    }
+    return enemyRegistry;
+}
+
+struct BulletRegistryEnemy
+InitializeBulletRegistryEnemy ()
+{
+    struct BulletRegistryEnemy bulletRegistryEnemy;
+    for (int i = 0; i < MAXENEMYBULLET; i++)
+    {
+        bulletRegistryEnemy.bulletAllocation[i] = 0;
+    }
+    return bulletRegistryEnemy;
+}
+
+
+/* General functions for Spacecrafts */
 
 int 
 DrawSpacecraft (struct Spacecraft *spacecraft)
@@ -71,21 +138,6 @@ TranslateSpacecraft (struct Spacecraft *spacecraft, Vector2 translation)
 }
 
 int
-MovePlayer (struct Spacecraft *player)
-{
-    float keyStates[4] = {0, 0 , 0, 0};
-    if (IsKeyDown(KEY_W)) keyStates[0] = 1;
-    if (IsKeyDown(KEY_S)) keyStates[1] = 1;
-    if (IsKeyDown(KEY_A)) keyStates[2] = 1;
-    if (IsKeyDown(KEY_D)) keyStates[3] = 1;
-    Vector2 translation = {keyStates[3] - keyStates[2], keyStates[1] - keyStates[0]};
-    if (Vector2Length(translation)!=0) translation = Vector2Normalize(translation);
-    translation = Vector2Multiply(translation, (Vector2){6, 6});
-    TranslateSpacecraft(player, translation);
-    return 0;
-}
-
-int
 PointSpacecraftAt (struct Spacecraft *spacecraft, Vector2 target)
 {
     Vector2 spacecraftDirection = Vector2Subtract(spacecraft->vertices[0], spacecraft->center);
@@ -105,37 +157,41 @@ PointSpacecraftAt (struct Spacecraft *spacecraft, Vector2 target)
     return 0;
 }
 
+struct Bullet
+MakeSpacecraftShoot (struct Spacecraft *spacecraft)
+{
+    struct Bullet bullet;
+    bullet.center = spacecraft->vertices[0];
+    Vector2 direction = Vector2Subtract(spacecraft->vertices[0], spacecraft->center);
+    bullet.direction = Vector2Normalize(direction);
+    bullet.radius = 4;
+    return bullet;
+}
+
+
+/* Player functions */
+
+int
+MovePlayer (struct Spacecraft *player)
+{
+    float keyStates[4] = {0, 0 , 0, 0};
+    if (IsKeyDown(KEY_W)) keyStates[0] = 1;
+    if (IsKeyDown(KEY_S)) keyStates[1] = 1;
+    if (IsKeyDown(KEY_A)) keyStates[2] = 1;
+    if (IsKeyDown(KEY_D)) keyStates[3] = 1;
+    Vector2 translation = {keyStates[3] - keyStates[2], keyStates[1] - keyStates[0]};
+    if (Vector2Length(translation)!=0) translation = Vector2Normalize(translation);
+    translation = Vector2Multiply(translation, (Vector2){6, 6});
+    TranslateSpacecraft(player, translation);
+    return 0;
+}
+
 int
 RotatePlayer (struct Spacecraft *player)
 {
     Vector2 target = GetMousePosition();
     PointSpacecraftAt(player, target);
     return 0;
-}
-
-struct Bullet
-{
-    Vector2 center;
-    Vector2 direction;
-    Color color;
-    int radius;
-};
-
-struct BulletRegistryPlayer
-{
-    struct Bullet bulletArray[MAXPLAYERBULLET];
-    int bulletAllocation[MAXPLAYERBULLET];
-};
-
-struct BulletRegistryPlayer
-InitializeBulletRegistryPlayer ()
-{
-    struct BulletRegistryPlayer bulletRegistryPlayer;
-    for (int i = 0; i < MAXPLAYERBULLET; i++)
-    {
-        bulletRegistryPlayer.bulletAllocation[i] = 0;
-    }
-    return bulletRegistryPlayer;
 }
 
 int
@@ -152,17 +208,6 @@ DrawBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
         }
     }
     return 0;
-}
-
-struct Bullet
-MakeSpacecraftShoot (struct Spacecraft *spacecraft)
-{
-    struct Bullet bullet;
-    bullet.center = spacecraft->vertices[0];
-    Vector2 direction = Vector2Subtract(spacecraft->vertices[0], spacecraft->center);
-    bullet.direction = Vector2Normalize(direction);
-    bullet.radius = 4;
-    return bullet;
 }
 
 int
@@ -223,22 +268,8 @@ UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegi
     }
 }
 
-struct EnemyRegistry
-{
-    struct Spacecraft enemyArray[5];
-    int enemyAllocation[5];
-};
 
-struct EnemyRegistry
-InitializeEnemyRegistry()
-{
-    struct EnemyRegistry enemyRegistry;
-    for (int i = 0; i < 5; i++)
-    {
-        enemyRegistry.enemyAllocation[i] = 0;
-    }
-    return enemyRegistry;
-}
+/* Enemy Functions */
 
 int
 CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
@@ -262,23 +293,6 @@ CreateEnemyInRegistry (struct EnemyRegistry *enemyRegistry)
         }
     }
     return 0;
-}
-
-struct BulletRegistryEnemy
-{
-    struct Bullet bulletArray[MAXENEMYBULLET];
-    int bulletAllocation[MAXENEMYBULLET];
-};
-
-struct BulletRegistryEnemy
-InitializeBulletRegistryEnemy ()
-{
-    struct BulletRegistryEnemy bulletRegistryEnemy;
-    for (int i = 0; i < MAXENEMYBULLET; i++)
-    {
-        bulletRegistryEnemy.bulletAllocation[i] = 0;
-    }
-    return bulletRegistryEnemy;
 }
 
 int
