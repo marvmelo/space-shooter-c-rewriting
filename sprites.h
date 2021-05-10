@@ -276,6 +276,14 @@ UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegi
 {
     MovePlayer(player);
     RotatePlayer(player);
+    if (player->hasShield)
+    {
+        player->color = DARKBLUE;
+    }
+    else
+    {
+        player->color = LIGHTGRAY;
+    }
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !player->bulletLock) 
     {
         MakePlayerShoot(player, bulletRegistryPlayer);
