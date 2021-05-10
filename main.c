@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include "screens.c"
+#include "screens.h"
 #define TRUE 1
 #define FALSE 0
 #define WIDTH 1280
