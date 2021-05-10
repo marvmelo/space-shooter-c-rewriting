@@ -482,7 +482,7 @@ DrawPowerUp (struct PowerUpRegistry *powerUpRegistry)
         if (powerUpRegistry->powerUpAllocation[i])
         {
             DrawCircleV(powerUpRegistry->powerUpArray[i].center,
-                        5,
+                        10,
                         powerUpRegistry->powerUpArray[i].color);
         }
     }
@@ -498,4 +498,19 @@ UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry)
         CreatePowerUpInRegistry(powerUpRegistry);
     }
     return 0;
+}
+
+
+/* Collisions Functions */
+
+int
+CheckCollisionBulletSpacecraft (struct Bullet bullet, struct Spacecraft spacecraft)
+{
+    return CheckCollisionCircles(bullet.center, 4, spacecraft.center, 15);
+}
+
+int
+CheckCollisionPoweUpSpacecraft (struct PowerUp powerUp, struct Spacecraft spacecraft)
+{
+    return CheckCollisionCircles(powerUp.center, 10, spacecraft.center, 15);
 }
