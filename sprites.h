@@ -64,6 +64,21 @@ struct PowerUpRegistry
 };
 
 
+/* Collisions Functions */
+
+int
+CheckCollisionBulletSpacecraft (struct Bullet bullet, struct Spacecraft spacecraft)
+{
+    return CheckCollisionCircles(bullet.center, 4, spacecraft.center, 15);
+}
+
+int
+CheckCollisionPoweUpSpacecraft (struct PowerUp powerUp, struct Spacecraft spacecraft)
+{
+    return CheckCollisionCircles(powerUp.center, 10, spacecraft.center, 15);
+}
+
+
 /* Initialization functions */
 
 int 
@@ -251,7 +266,7 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
 }
 
 int
-UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
+UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer, struct EnemyRegistry *enemyRegistry)
 {
     for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
@@ -266,6 +281,16 @@ UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
             {
                 bulletRegistryPlayer->bulletAllocation[i] = 0;
             }
+            for (int i = 0; i < 5; i++)
+            {
+                int collision = CheckCollisionBulletSpacecraft(bulletRegistryPlayer->bulletArray[i], enemyRegistry->enemyArray[i]);
+                if (collision && enemyRegistry->enemyAllocation[i])
+                {
+                    enemyRegistry->enemyAllocation[i] = 0;
+                    bulletRegistryPlayer->bulletAllocation[i] = 0;
+                }
+            }
+            
         }
     }
     return 0;
@@ -509,19 +534,4 @@ UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry)
         CreatePowerUpInRegistry(powerUpRegistry);
     }
     return 0;
-}
-
-
-/* Collisions Functions */
-
-int
-CheckCollisionBulletSpacecraft (struct Bullet bullet, struct Spacecraft spacecraft)
-{
-    return CheckCollisionCircles(bullet.center, 4, spacecraft.center, 15);
-}
-
-int
-CheckCollisionPoweUpSpacecraft (struct PowerUp powerUp, struct Spacecraft spacecraft)
-{
-    return CheckCollisionCircles(powerUp.center, 10, spacecraft.center, 15);
 }

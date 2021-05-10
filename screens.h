@@ -60,7 +60,7 @@ GameplayScreen (int screenWidth, int screenHeight)
             break;
         }
         UpdatePlayer(&player, &bulletRegistryPlayer);
-        UpdateBulletPlayer(&bulletRegistryPlayer);
+        UpdateBulletPlayer(&bulletRegistryPlayer, &enemyRegistry);
         UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
         UpdateBulletEnemy(&bulletRegistryEnemy);
         BeginDrawing();
