@@ -18,6 +18,8 @@ struct Spacecraft
     int life;
     int bulletLock;
 
+    int hasShield;
+
     int maxDistanceToPlayer;
     int direction;
 };
@@ -77,6 +79,7 @@ InitializeSpacecraft (struct Spacecraft *spacecraft, Vector2 center, int life, C
     spacecraft->life = life;
     spacecraft->color = color;
     spacecraft->bulletLock = 0;
+    spacecraft->hasShield = 0;
     return 0;
 };
 

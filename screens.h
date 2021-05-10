@@ -45,7 +45,7 @@ GameplayScreen (int screenWidth, int screenHeight)
     int status = 2;
     struct Spacecraft player;
     Vector2 screenCenter = {(float)screenWidth/2.0f, (float)screenHeight/2.0f};
-    InitializeSpacecraft(&player, screenCenter, 5, BLUE);
+    InitializeSpacecraft(&player, screenCenter, 5, LIGHTGRAY);
     struct BulletRegistryPlayer bulletRegistryPlayer;
     InitializeBulletRegistryPlayer(&bulletRegistryPlayer);
     struct EnemyRegistry enemyRegistry;
