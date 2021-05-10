@@ -430,7 +430,7 @@ UpdateEnemy (struct EnemyRegistry *enemyRegistry,
 }
 
 int
-UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
+UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy, struct Spacecraft *player)
 {
     for (int i = 0; i < MAXENEMYBULLET; i++)
     {
@@ -444,6 +444,11 @@ UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
                 bulletRegistryEnemy->bulletArray[i].center.y>HEIGHT)
             {
                 bulletRegistryEnemy->bulletAllocation[i] = 0;
+            }
+            if (CheckCollisionBulletSpacecraft(bulletRegistryEnemy->bulletArray[i], *player))
+            {
+                bulletRegistryEnemy->bulletAllocation[i] = 0;
+                player->life--;
             }
         }
     }
