@@ -69,13 +69,13 @@ struct PowerUpRegistry
 int
 CheckCollisionBulletSpacecraft (struct Bullet bullet, struct Spacecraft spacecraft)
 {
-    return CheckCollisionCircles(bullet.center, 4, spacecraft.center, 15);
+    return CheckCollisionCircles(bullet.center, 4, spacecraft.center, 21);
 }
 
 int
 CheckCollisionPoweUpSpacecraft (struct PowerUp powerUp, struct Spacecraft spacecraft)
 {
-    return CheckCollisionCircles(powerUp.center, 10, spacecraft.center, 15);
+    return CheckCollisionCircles(powerUp.center, 10, spacecraft.center, 21);
 }
 
 
@@ -281,16 +281,15 @@ UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer, struct En
             {
                 bulletRegistryPlayer->bulletAllocation[i] = 0;
             }
-            for (int i = 0; i < 5; i++)
+            for (int j = 0; j < 5; j++)
             {
-                int collision = CheckCollisionBulletSpacecraft(bulletRegistryPlayer->bulletArray[i], enemyRegistry->enemyArray[i]);
-                if (collision && enemyRegistry->enemyAllocation[i])
+                int collision = CheckCollisionBulletSpacecraft(bulletRegistryPlayer->bulletArray[i], enemyRegistry->enemyArray[j]);
+                if (collision && enemyRegistry->enemyAllocation[j])
                 {
-                    enemyRegistry->enemyAllocation[i] = 0;
+                    enemyRegistry->enemyAllocation[j] = 0;
                     bulletRegistryPlayer->bulletAllocation[i] = 0;
                 }
             }
-            
         }
     }
     return 0;
