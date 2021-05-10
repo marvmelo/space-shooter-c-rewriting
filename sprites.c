@@ -48,11 +48,19 @@ struct BulletRegistryEnemy
     int bulletAllocation[MAXENEMYBULLET];
 };
 
+struct PowerUp
+{
+    Vector2 center;
+    int type;
+    Color color;
+};
+
 struct PowerUpRegistry
 {
     int powerUpAllocation[POWERUPAMOUNT];
-    int powerUpArray[POWERUPAMOUNT];
+    struct PowerUp powerUpArray[POWERUPAMOUNT];
 };
+
 
 /* Initialization functions */
 
@@ -100,6 +108,16 @@ InitializeBulletRegistryEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
         bulletRegistryEnemy->bulletAllocation[i] = 0;
     }
     return 0;
+}
+
+int
+InitializePowerUpRegisty(struct PowerUpRegistry *powerUpRegistry)
+{
+    for (int i = 0; i < POWERUPAMOUNT; i++)
+    {
+        powerUpRegistry->powerUpAllocation[i] = 0;
+    }
+    
 }
 
 
@@ -348,7 +366,7 @@ UpdateEnemy (struct EnemyRegistry *enemyRegistry,
              struct Spacecraft *player)
 {
     int randValue = GetRandomValue(0, 89);
-    if (randValue)
+    if (!randValue)
     {
         CreateEnemyInRegistry(enemyRegistry);
     }
@@ -428,3 +446,56 @@ DrawBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
 
 
 /* Powerup functions */
+
+int
+CreatePowerUpInRegistry (struct PowerUpRegistry *powerUpRegistry)
+{
+    for (int i = 0; i < POWERUPAMOUNT; i++)
+    {
+        if (!powerUpRegistry->powerUpAllocation[i])
+        {   
+            float powerUpX, powerUpY;
+            powerUpX = (float)GetRandomValue(15, WIDTH-15);
+            powerUpY = (float)GetRandomValue(15, HEIGHT-15);
+            powerUpRegistry->powerUpArray[i].center = (Vector2){powerUpX, powerUpY};
+            powerUpRegistry->powerUpArray[i].type = GetRandomValue(0, 1);
+            if (powerUpRegistry->powerUpArray[i].type)
+            {
+                powerUpRegistry->powerUpArray[i].color = RED;
+            }
+            else
+            {
+                powerUpRegistry->powerUpArray[i].color = DARKBLUE;
+            }
+            powerUpRegistry->powerUpAllocation[i] = 1;
+            break;
+        }
+    }
+    return 0;
+}
+
+int
+DrawPowerUp (struct PowerUpRegistry *powerUpRegistry)
+{
+    for (int i = 0; i < POWERUPAMOUNT; i++)
+    {
+        if (powerUpRegistry->powerUpAllocation[i])
+        {
+            DrawCircleV(powerUpRegistry->powerUpArray[i].center,
+                        5,
+                        powerUpRegistry->powerUpArray[i].color);
+        }
+    }
+    return 0;
+}
+
+int
+UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry)
+{
+    int randValue = GetRandomValue(0, 299);
+    if (!randValue)
+    {
+        CreatePowerUpInRegistry(powerUpRegistry);
+    }
+    return 0;
+}
