@@ -452,7 +452,14 @@ UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy, struct Space
             if (CheckCollisionBulletSpacecraft(bulletRegistryEnemy->bulletArray[i], *player))
             {
                 bulletRegistryEnemy->bulletAllocation[i] = 0;
-                player->life--;
+                if (player->hasShield)
+                {
+                    player->hasShield = 0;
+                }
+                else
+                {
+                    player->life--;
+                }
             }
         }
     }
