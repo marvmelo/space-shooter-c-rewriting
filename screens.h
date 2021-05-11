@@ -77,7 +77,7 @@ GameplayScreen (int screenWidth, int screenHeight)
         UpdateBulletPlayer(&bulletRegistryPlayer, &enemyRegistry);
         UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
         UpdateBulletEnemy(&bulletRegistryEnemy, &player);
-        UpdatePowerUp(&powerUpRegistry);
+        UpdatePowerUp(&powerUpRegistry, &player);
         BeginDrawing();
         ClearBackground(BLACK);
         DrawSpacecraft(&player);

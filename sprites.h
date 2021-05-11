@@ -531,12 +531,31 @@ DrawPowerUp (struct PowerUpRegistry *powerUpRegistry)
 }
 
 int
-UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry)
+UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry, struct Spacecraft *player)
 {
     int randValue = GetRandomValue(0, 299);
     if (!randValue)
     {
         CreatePowerUpInRegistry(powerUpRegistry);
+        for (int i = 0; i < POWERUPAMOUNT; i++);
+    }
+    for (int i = 0; i < POWERUPAMOUNT; i++)
+    {
+        if(powerUpRegistry->powerUpAllocation[i])
+        {
+            if (CheckCollisionPoweUpSpacecraft(powerUpRegistry->powerUpArray[i], *player))
+            {
+                powerUpRegistry->powerUpAllocation[i] = 0;
+                if (powerUpRegistry->powerUpAllocation[i] && player->life<5)
+                {
+                    player->life++;
+                }
+                else
+                {
+                    player->hasShield =1;
+                }
+            }
+        }
     }
     return 0;
 }
