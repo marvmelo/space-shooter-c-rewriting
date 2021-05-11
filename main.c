@@ -13,13 +13,14 @@ main ()
     SetTargetFPS(30);
     while (status)
     {
+        struct GameplayScreenReturnValues returnValues;
         switch (status)
         {
         case (1):
             status = StartScreen(WIDTH, HEIGHT);
             break;
         case (2):
-            struct GameplayScreenReturnValues returnValues = GameplayScreen(WIDTH, HEIGHT);
+            returnValues = GameplayScreen(WIDTH, HEIGHT);
             status = returnValues.status;
             break;
         }
