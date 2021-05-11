@@ -15,7 +15,6 @@ StartScreen (int screenWidth, int screenHeight)
     int status = 1;
     char title[] = "Space Shooter";
     char message[] = "Press ENTER to play";
-    Font defaultFont = GetFontDefault();
     int titleFontSize = 80;
     int messageFontSize = 30;
     int titleWidth = MeasureText(title, titleFontSize);
@@ -85,6 +84,7 @@ GameplayScreen (int screenWidth, int screenHeight)
         DrawEnemy(&enemyRegistry);
         DrawBulletEnemy(&bulletRegistryEnemy);
         DrawPowerUp(&powerUpRegistry);
+        ShowLife(&player);
         EndDrawing();
     }
     returnValues.score = player.score;

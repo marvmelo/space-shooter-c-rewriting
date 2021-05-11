@@ -569,3 +569,24 @@ UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry, struct Spacecraft *playe
     }
     return 0;
 }
+
+
+/* Info functions */
+
+int ShowLife (struct Spacecraft *player)
+{
+    char text[] = "LIFE:";
+    int textSize = 20;
+    int textX = 15;
+    int textY = 15;
+    int textWidth = MeasureText(text, textSize);
+    DrawText(text, textX, textY, textSize, WHITE);
+    int life = player->life;
+    int lifeX = textX + MeasureText(text, textSize);
+    for (int i = 0; i < life; i++)
+    {
+        lifeX += 20;
+        DrawRectangle(lifeX, textY, 15, 15, RED);
+    }
+    return 0;
+}
