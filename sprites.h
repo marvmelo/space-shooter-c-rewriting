@@ -549,11 +549,11 @@ UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry, struct Spacecraft *playe
             if (CheckCollisionPoweUpSpacecraft(powerUpRegistry->powerUpArray[i], *player))
             {
                 powerUpRegistry->powerUpAllocation[i] = 0;
-                if (powerUpRegistry->powerUpAllocation[i] && player->life<5)
+                if (powerUpRegistry->powerUpArray[i].type && player->life<5)
                 {
                     player->life++;
                 }
-                else
+                else if (!powerUpRegistry->powerUpArray[i].type)
                 {
                     player->hasShield =1;
                 }
