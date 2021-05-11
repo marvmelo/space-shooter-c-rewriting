@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include "screens.c"
+#include "screens.h"
 #define TRUE 1
 #define FALSE 0
 #define WIDTH 1280
@@ -13,13 +13,15 @@ main ()
     SetTargetFPS(30);
     while (status)
     {
+        struct GameplayScreenReturnValues returnValues;
         switch (status)
         {
         case (1):
             status = StartScreen(WIDTH, HEIGHT);
             break;
         case (2):
-            status = GameplayScreen(WIDTH, HEIGHT);
+            returnValues = GameplayScreen(WIDTH, HEIGHT);
+            status = returnValues.status;
             break;
         }
     }

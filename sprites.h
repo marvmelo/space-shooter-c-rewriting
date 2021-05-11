@@ -18,6 +18,9 @@ struct Spacecraft
     int life;
     int bulletLock;
 
+    int hasShield;
+    int score;
+
     int maxDistanceToPlayer;
     int direction;
 };
@@ -62,6 +65,21 @@ struct PowerUpRegistry
 };
 
 
+/* Collisions Functions */
+
+int
+CheckCollisionBulletSpacecraft (struct Bullet bullet, struct Spacecraft spacecraft)
+{
+    return CheckCollisionCircles(bullet.center, 4, spacecraft.center, 21);
+}
+
+int
+CheckCollisionPoweUpSpacecraft (struct PowerUp powerUp, struct Spacecraft spacecraft)
+{
+    return CheckCollisionCircles(powerUp.center, 10, spacecraft.center, 21);
+}
+
+
 /* Initialization functions */
 
 int 
@@ -77,6 +95,8 @@ InitializeSpacecraft (struct Spacecraft *spacecraft, Vector2 center, int life, C
     spacecraft->life = life;
     spacecraft->color = color;
     spacecraft->bulletLock = 0;
+    spacecraft->hasShield = 0;
+    spacecraft->score = 0;
     return 0;
 };
 
@@ -248,8 +268,9 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
 }
 
 int
-UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
+UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer, struct EnemyRegistry *enemyRegistry)
 {
+    int score = 0;
     for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
         if (bulletRegistryPlayer->bulletAllocation[i])
@@ -263,9 +284,19 @@ UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer)
             {
                 bulletRegistryPlayer->bulletAllocation[i] = 0;
             }
+            for (int j = 0; j < 5; j++)
+            {
+                int collision = CheckCollisionBulletSpacecraft(bulletRegistryPlayer->bulletArray[i], enemyRegistry->enemyArray[j]);
+                if (collision && enemyRegistry->enemyAllocation[j])
+                {
+                    enemyRegistry->enemyAllocation[j] = 0;
+                    bulletRegistryPlayer->bulletAllocation[i] = 0;
+                    score += 50;
+                }
+            }
         }
     }
-    return 0;
+    return score;
 }
 
 int
@@ -273,6 +304,14 @@ UpdatePlayer (struct Spacecraft *player, struct BulletRegistryPlayer *bulletRegi
 {
     MovePlayer(player);
     RotatePlayer(player);
+    if (player->hasShield)
+    {
+        player->color = DARKBLUE;
+    }
+    else
+    {
+        player->color = LIGHTGRAY;
+    }
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && !player->bulletLock) 
     {
         MakePlayerShoot(player, bulletRegistryPlayer);
@@ -395,7 +434,7 @@ UpdateEnemy (struct EnemyRegistry *enemyRegistry,
 }
 
 int
-UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
+UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy, struct Spacecraft *player)
 {
     for (int i = 0; i < MAXENEMYBULLET; i++)
     {
@@ -409,6 +448,18 @@ UpdateBulletEnemy (struct BulletRegistryEnemy *bulletRegistryEnemy)
                 bulletRegistryEnemy->bulletArray[i].center.y>HEIGHT)
             {
                 bulletRegistryEnemy->bulletAllocation[i] = 0;
+            }
+            if (CheckCollisionBulletSpacecraft(bulletRegistryEnemy->bulletArray[i], *player))
+            {
+                bulletRegistryEnemy->bulletAllocation[i] = 0;
+                if (player->hasShield)
+                {
+                    player->hasShield = 0;
+                }
+                else
+                {
+                    player->life--;
+                }
             }
         }
     }
@@ -482,7 +533,7 @@ DrawPowerUp (struct PowerUpRegistry *powerUpRegistry)
         if (powerUpRegistry->powerUpAllocation[i])
         {
             DrawCircleV(powerUpRegistry->powerUpArray[i].center,
-                        5,
+                        10,
                         powerUpRegistry->powerUpArray[i].color);
         }
     }
@@ -490,12 +541,68 @@ DrawPowerUp (struct PowerUpRegistry *powerUpRegistry)
 }
 
 int
-UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry)
+UpdatePowerUp (struct PowerUpRegistry *powerUpRegistry, struct Spacecraft *player)
 {
     int randValue = GetRandomValue(0, 299);
     if (!randValue)
     {
         CreatePowerUpInRegistry(powerUpRegistry);
+        for (int i = 0; i < POWERUPAMOUNT; i++);
     }
+    for (int i = 0; i < POWERUPAMOUNT; i++)
+    {
+        if(powerUpRegistry->powerUpAllocation[i])
+        {
+            if (CheckCollisionPoweUpSpacecraft(powerUpRegistry->powerUpArray[i], *player))
+            {
+                powerUpRegistry->powerUpAllocation[i] = 0;
+                if (powerUpRegistry->powerUpArray[i].type && player->life<5)
+                {
+                    player->life++;
+                }
+                else if (!powerUpRegistry->powerUpArray[i].type)
+                {
+                    player->hasShield =1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+
+/* Info functions */
+
+int
+ShowLife (struct Spacecraft *player)
+{
+    char text[] = "LIFE:";
+    int textSize = 20;
+    int textX = 15;
+    int textY = 15;
+    int textWidth = MeasureText(text, textSize);
+    DrawText(text, textX, textY, textSize, WHITE);
+    int life = player->life;
+    int lifeX = textX + MeasureText(text, textSize);
+    for (int i = 0; i < life; i++)
+    {
+        lifeX += 20;
+        DrawRectangle(lifeX, textY, 15, 15, RED);
+    }
+    return 0;
+}
+
+int
+ShowScore (struct Spacecraft *player)
+{
+    char text[] = "SCORE:";
+    int textSize = 20;
+    int textX = 15;
+    int textY = 35;
+    int textWidth = MeasureText(text, textSize);
+    int scoreX = textX + textWidth + 5;
+    int score = player->score;
+    DrawText(text, textX, textY, textSize, WHITE);
+    DrawText(TextFormat("%i", score), scoreX, textY, textSize, WHITE);
     return 0;
 }
