@@ -96,6 +96,7 @@ InitializeSpacecraft (struct Spacecraft *spacecraft, Vector2 center, int life, C
     spacecraft->color = color;
     spacecraft->bulletLock = 0;
     spacecraft->hasShield = 0;
+    spacecraft->score = 0;
     return 0;
 };
 
@@ -269,6 +270,7 @@ MakePlayerShoot (struct Spacecraft *player, struct BulletRegistryPlayer *bulletR
 int
 UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer, struct EnemyRegistry *enemyRegistry)
 {
+    int score = 0;
     for (int i = 0; i < MAXPLAYERBULLET; i++)
     {
         if (bulletRegistryPlayer->bulletAllocation[i])
@@ -289,11 +291,12 @@ UpdateBulletPlayer (struct BulletRegistryPlayer *bulletRegistryPlayer, struct En
                 {
                     enemyRegistry->enemyAllocation[j] = 0;
                     bulletRegistryPlayer->bulletAllocation[i] = 0;
+                    score += 50;
                 }
             }
         }
     }
-    return 0;
+    return score;
 }
 
 int

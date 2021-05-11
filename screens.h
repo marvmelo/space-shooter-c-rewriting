@@ -74,7 +74,7 @@ GameplayScreen (int screenWidth, int screenHeight)
             break;
         }
         UpdatePlayer(&player, &bulletRegistryPlayer);
-        UpdateBulletPlayer(&bulletRegistryPlayer, &enemyRegistry);
+        player.score += UpdateBulletPlayer(&bulletRegistryPlayer, &enemyRegistry);
         UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
         UpdateBulletEnemy(&bulletRegistryEnemy, &player);
         UpdatePowerUp(&powerUpRegistry, &player);
