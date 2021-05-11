@@ -19,6 +19,7 @@ struct Spacecraft
     int bulletLock;
 
     int hasShield;
+    int score;
 
     int maxDistanceToPlayer;
     int direction;

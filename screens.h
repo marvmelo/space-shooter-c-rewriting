@@ -3,10 +3,16 @@
 #include "sprites.h"
 #define TRUE 1
 
+struct GameplayScreenReturnValues
+{
+    int status;
+    int score;
+};
+
 int
 StartScreen (int screenWidth, int screenHeight)
 {
-    int status = -1;
+    int status = 1;
     char title[] = "Space Shooter";
     char message[] = "Press ENTER to play";
     Font defaultFont = GetFontDefault();
@@ -39,10 +45,11 @@ StartScreen (int screenWidth, int screenHeight)
     return status;
 }
 
-int
+struct GameplayScreenReturnValues
 GameplayScreen (int screenWidth, int screenHeight)
 {
-    int status = 2;
+    struct GameplayScreenReturnValues returnValues;
+    returnValues.status = 2;
     struct Spacecraft player;
     Vector2 screenCenter = {(float)screenWidth/2.0f, (float)screenHeight/2.0f};
     InitializeSpacecraft(&player, screenCenter, 5, LIGHTGRAY);
@@ -58,13 +65,18 @@ GameplayScreen (int screenWidth, int screenHeight)
     {
         if (WindowShouldClose())
         {
-            status = 0;
+            returnValues.status = 0;
+            break;
+        }
+        if (player.life<0)
+        {
+            returnValues.status = 3;
             break;
         }
         UpdatePlayer(&player, &bulletRegistryPlayer);
         UpdateBulletPlayer(&bulletRegistryPlayer, &enemyRegistry);
         UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
-        UpdateBulletEnemy(&bulletRegistryEnemy);
+        UpdateBulletEnemy(&bulletRegistryEnemy, &player);
         UpdatePowerUp(&powerUpRegistry);
         BeginDrawing();
         ClearBackground(BLACK);
@@ -75,5 +87,6 @@ GameplayScreen (int screenWidth, int screenHeight)
         DrawPowerUp(&powerUpRegistry);
         EndDrawing();
     }
-    return status;
+    returnValues.score = player.score;
+    return returnValues;
 }

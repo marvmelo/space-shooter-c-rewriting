@@ -19,7 +19,8 @@ main ()
             status = StartScreen(WIDTH, HEIGHT);
             break;
         case (2):
-            status = GameplayScreen(WIDTH, HEIGHT);
+            struct GameplayScreenReturnValues returnValues = GameplayScreen(WIDTH, HEIGHT);
+            status = returnValues.status;
             break;
         }
     }
