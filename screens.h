@@ -85,6 +85,7 @@ GameplayScreen (int screenWidth, int screenHeight)
         DrawBulletEnemy(&bulletRegistryEnemy);
         DrawPowerUp(&powerUpRegistry);
         ShowLife(&player);
+        ShowScore(&player);
         EndDrawing();
     }
     returnValues.score = player.score;
