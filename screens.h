@@ -68,7 +68,7 @@ GameplayScreen (int screenWidth, int screenHeight, Music music)
             returnValues.status = 0;
             break;
         }
-        if (player.life<0)
+        if (player.life<=0)
         {
             returnValues.status = 3;
             break;
