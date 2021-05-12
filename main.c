@@ -10,17 +10,23 @@ main ()
 {
     int status = 1;
     InitWindow(WIDTH, HEIGHT, "Space Shooter C v1.0");
+    InitAudioDevice();
     SetTargetFPS(30);
+    Music music = LoadMusicStream("Envision.mp3");
+    music.looping = TRUE;
+    PlayMusicStream(music);
+    float pitch = 1.0f;
+    SetMusicPitch(music, pitch);
+    struct GameplayScreenReturnValues returnValues;
     while (status)
     {
-        struct GameplayScreenReturnValues returnValues;
         switch (status)
         {
         case (1):
-            status = StartScreen(WIDTH, HEIGHT);
+            status = StartScreen(WIDTH, HEIGHT, music);
             break;
         case (2):
-            returnValues = GameplayScreen(WIDTH, HEIGHT);
+            returnValues = GameplayScreen(WIDTH, HEIGHT, music);
             status = returnValues.status;
             break;
         }
