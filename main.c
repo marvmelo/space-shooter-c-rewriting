@@ -29,6 +29,9 @@ main ()
             returnValues = GameplayScreen(WIDTH, HEIGHT, music);
             status = returnValues.status;
             break;
+        case (3):
+            status = EndScreen(WIDTH, HEIGHT, returnValues.score);
+            break;
         }
     }
     CloseWindow();

@@ -93,3 +93,39 @@ GameplayScreen (int screenWidth, int screenHeight, Music music)
     returnValues.score = player.score;
     return returnValues;
 }
+
+int
+EndScreen (int screenWidth, int screenHeight, int score)
+{
+    int status = 3;
+    char gameOver[] = "GAME OVER";
+    int gameOverSize = 80;
+    char scoreStr[13];
+    sprintf(scoreStr, "SCORE: %i", score);
+    int scoreStrSize = 30;
+    int gameOverWidth = MeasureText(gameOver, gameOverSize);
+    int scoreStrWidth = MeasureText(scoreStr, scoreStrSize);
+    int gameOverX = (screenWidth - gameOverWidth)/2;
+    int gameOverY = (screenHeight - 250)/2;
+    int scoreStrX = (screenWidth - scoreStrWidth)/2;
+    int scoreStrY = (screenHeight - 80)/2;
+    while (TRUE)
+    {
+        if (WindowShouldClose())
+        {
+            status = 0;
+            break;
+        }
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            status = 2;
+            break;
+        }
+        BeginDrawing();
+        ClearBackground(BLACK);
+        DrawText(gameOver, gameOverX, gameOverY, gameOverSize, WHITE);
+        DrawText(scoreStr, scoreStrX, scoreStrY, scoreStrSize, WHITE);
+        EndDrawing();
+    }
+    return status;
+}
