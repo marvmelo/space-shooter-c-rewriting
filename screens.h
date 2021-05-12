@@ -10,7 +10,7 @@ struct GameplayScreenReturnValues
 };
 
 int
-StartScreen (int screenWidth, int screenHeight)
+StartScreen (int screenWidth, int screenHeight, Music music)
 {
     int status = 1;
     char title[] = "Space Shooter";
@@ -35,6 +35,7 @@ StartScreen (int screenWidth, int screenHeight)
             status = 2;
             break;
         }
+        UpdateMusicStream(music);
         BeginDrawing();
         ClearBackground(BLACK);
         DrawText(title, titleX, titleY, titleFontSize, WHITE);
@@ -45,7 +46,7 @@ StartScreen (int screenWidth, int screenHeight)
 }
 
 struct GameplayScreenReturnValues
-GameplayScreen (int screenWidth, int screenHeight)
+GameplayScreen (int screenWidth, int screenHeight, Music music)
 {
     struct GameplayScreenReturnValues returnValues;
     returnValues.status = 2;
@@ -72,6 +73,7 @@ GameplayScreen (int screenWidth, int screenHeight)
             returnValues.status = 3;
             break;
         }
+        UpdateMusicStream(music);
         UpdatePlayer(&player, &bulletRegistryPlayer);
         player.score += UpdateBulletPlayer(&bulletRegistryPlayer, &enemyRegistry);
         UpdateEnemy(&enemyRegistry, &bulletRegistryEnemy, &player);
